@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axiosInstance from "../api/axiosInstance";
 import { AppContext } from "../context/AppContext";
 
 export default function LoginPage() {
@@ -46,20 +45,17 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      const response = await axiosInstance.post("/auth/login", {
-        username: formData.username,
-        password: formData.password,
-        expiresInMins: 30,
-      });
-
-      localStorage.setItem("token", response.data.accessToken);
-      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("token", "demo-token");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username: formData.username,
+        })
+      );
 
       navigate("/products");
-    } catch (error) {
-      setServerError(
-        error.response?.data?.message || "Login failed. Please try again."
-      );
+    } catch  {
+      setServerError("Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -76,7 +72,7 @@ export default function LoginPage() {
       <div
         className={
           darkMode
-            ? "w-full max-w-md bg-gray-800 text-white rounded-2xl shadow-xl p-8 border border-gray-700"
+            ? "w-full max-w-md bg-gray-800 text-white rounded-2xl shadow p-8"
             : "w-full max-w-md bg-white rounded-2xl shadow p-8"
         }
       >
@@ -96,11 +92,7 @@ export default function LoginPage() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className={
-                darkMode
-                  ? "w-full bg-gray-700 border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-gray-400"
-                  : "w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              }
+              className="w-full border rounded-lg px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter your username"
             />
             {errors.username && (
@@ -115,11 +107,7 @@ export default function LoginPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={
-                darkMode
-                  ? "w-full bg-gray-700 border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-gray-400"
-                  : "w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              }
+              className="w-full border rounded-lg px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter your password"
             />
             {errors.password && (
@@ -135,7 +123,6 @@ export default function LoginPage() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-
         <p className="text-center mt-5 text-sm">
           Don&apos;t have an account?{" "}
           <Link to="/register" className="text-blue-400 font-semibold">

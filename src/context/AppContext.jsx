@@ -1,8 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
 
-export const AppContext = createContext();
+const AppContext = createContext();
 
-export default function AppProvider({ children }) {
+function AppProvider({ children }) {
   const [language, setLanguage] = useState("en");
   const [darkMode, setDarkMode] = useState(false);
 
@@ -28,4 +28,6 @@ export default function AppProvider({ children }) {
       {children}
     </AppContext.Provider>
   );
+
 };
+export { AppContext, AppProvider };
